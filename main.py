@@ -29,8 +29,8 @@ match valor:
     case _:
         print("Opção inválida. Escolha entre 1, 2, 3, 4 ou 5.")
 
-matrices_list = criar_matriz(valor)
-salvar_matriz(matrices_list, "nova_matriz.txt")
+matrizes_list = criar_matriz(valor)
+salvar_matriz(matrizes_list, "nova_matriz.txt")
 
 # Nome do arquivo
 nome_arquivo = 'nova_matriz.txt'
