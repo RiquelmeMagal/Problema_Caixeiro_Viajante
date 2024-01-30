@@ -11,7 +11,9 @@ Também precisamos estar atentos a algumas restrições:
 2. Garantir que sub-circuitos sejam eliminados. Se considerarmos apenas a primeira restrição, grafos com subcircuitos que não se conectam entre si poderiam ser considerados.
 
 Existem várias outras, entretanto, como vamos usar base de dados pequenas, para manter essa solução simples, consideraremos apenas essas.
-
+### ❗IMPORTANTE:
+Antes de começarmos, é importante destacar que o Gurobi impõe limitações na quantidade de dados que podem ser processados neste conjunto de dados. Ao executar o arquivo 'att48', você pode encontrar um erro que solicita a aquisição de uma licença completa. Caso você seja um estudante, é possível obter uma licença gratuita utilizando seu e-mail acadêmico.
+Lembre-se das restrições das licenças: todo teste deve ser conduzido com o intuito de aprendizado, e não para propósitos comerciais. Recomendamos cautela ao realizar qualquer experimento.
 #### As bases de dados
 Existem várias bases de dados com soluções já conhecidas para o TSP. Você pode baixar todas [aqui](http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/tsp/). Para esse projeto, selecionamos as seguintes:
 | Base de dados | Número de cidades | Solução padrão |
@@ -144,6 +146,66 @@ Dentro da pasta do projeto, instale as dependências com o comando:
 pip install -r requirements.txt
 ```
 Depois disso, é só executar o programa e interagir com o menu.
+# Problema do caixeiro viajante
+    m.setObjective(x.prod(custos), sense=gp.GRB.MINIMIZE)
+   ```
+4. Adiciona as restrições ao modelo
+   ```
+    c1 = m.addConstrs(
+        gp.quicksum(x[i, j] for j in destinos if i != j) == 1
+        for i in origens)
+
+    c2 = m.addConstrs(
+        gp.quicksum(x[i, j] for i in origens if i != j) == 1
+        for j in destinos)
+
+    c3 = m.addConstrs(
+        u[i] - u[j] + qtd_pontos * x[i, j] <= qtd_pontos - 1
+        for i in origens[1:] for j in destinos[1:] if i != j)
+    ```
+5. Executa o algorítmo, gera um vetor com o circuito e imprime isso no console:
+   ```
+    m.optimize()
+
+    circuito = [1]
+    anterior = 1
+    for ponto in range(qtd_pontos):
+        for j in destinos:
+            if round(x[anterior, j].X) == 1:
+                circuito.append(j)
+                anterior = j
+                break
+
+    print("Circuito percorrido: ")
+    print(circuito)
+   ```
+   
+## Como rodar o projeto na sua máquina
+> Hardware sugerido: Processador 3.9GHz Intel Core i7 com 16Gb de RAM e sistema operacional Linux.
+
+#### Clone do projeto 
+Com o git instalado na sua máquina, clone o repositório:
+```
+https://github.com/RiquelmeMagal/Problema_Caixeiro_Viajante.git
+```
+#### Instação das dependências
+Dentro da pasta do projeto, instale as dependências com o comando:
+```
+pip install -r requirements.txt
+```
+Depois disso, é só executar o programa e interagir com o menu.
+
+## Licença
+- [GNU 3.0](https://github.com/RiquelmeMagal/Problema_Caixeiro_Viajante/blob/main/LICENSE)
+
+## Desenvolvedores
+| Nome | E-mail |
+| --- | --- |
+| Gustavo Henrique | [gustavo.malaquias@arapiraca.ufal.br](mailto:gustavo.malaquias@arapiraca.ufal.br) |
+| Riquelme Magalhães | [riquelme.souza@arapiraca.ufal.br](mailto:riquelme.souza@arapiraca.ufal.br) |
+| Alex Sandro | [alex.oliveira@arapiraca.ufal.br](mailto:alex.oliveira@arapiraca.ufal.br) |
+| Jaiane Oliveira | [jaiane.oliveira@arapiraca.ufal.br](mailto:jaiane.oliveira@arapiraca.ufal.br) |
+
 
 ## Licença
 - [GNU 3.0](https://github.com/RiquelmeMagal/Problema_Caixeiro_Viajante/blob/main/LICENSE)
