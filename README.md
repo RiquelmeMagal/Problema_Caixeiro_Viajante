@@ -92,29 +92,23 @@ Para resolver o problema, usamos a biblioteca `gurobi`. No arquivo `solver.py`, 
    ```
 3. Inicializa o modelo, cria as variáveis de decisão e define a função objetivo
    ```
-    # Inicializa o modelo
     m = gp.Model()
 
-    # Variáveis de decisão
     x = m.addVars(origens, destinos, vtype=gp.GRB.BINARY)
     u = m.addVars(origens[1:], vtype=gp.GRB.INTEGER, ub=qtd_pontos - 1)
 
-    # Função Objetivo
     m.setObjective(x.prod(custos), sense=gp.GRB.MINIMIZE)
    ```
 4. Adiciona as restrições ao modelo
    ```
-    # Restrições que garantem que cada ponto será origem exatamente uma vez
     c1 = m.addConstrs(
         gp.quicksum(x[i, j] for j in destinos if i != j) == 1
         for i in origens)
 
-    # Restrições que garantem que cada ponto será destino exatamente uma vez
     c2 = m.addConstrs(
         gp.quicksum(x[i, j] for i in origens if i != j) == 1
         for j in destinos)
 
-    # Restrições de eliminação de subrotas
     c3 = m.addConstrs(
         u[i] - u[j] + qtd_pontos * x[i, j] <= qtd_pontos - 1
         for i in origens[1:] for j in destinos[1:] if i != j)
@@ -136,8 +130,29 @@ Para resolver o problema, usamos a biblioteca `gurobi`. No arquivo `solver.py`, 
     print(circuito)
    ```
    
-## Instalação
-## Como usar
+## Como rodar o projeto na sua máquina
+> Hardware sugerido: Processador 3.9GHz Intel Core i7 com 16Gb de RAM e sistema operacional Linux.
+
+#### Clone do projeto 
+Com o git instalado na sua máquina, clone o repositório:
+```
+https://github.com/RiquelmeMagal/Problema_Caixeiro_Viajante.git
+```
+#### Instação das dependências
+Dentro da pasta do projeto, instale as dependências com o comando:
+```
+pip install -r requirements.txt
+```
+Depois disso, é só executar o programa e interagir com o menu.
+
 ## Licença
+- [GNU 3.0](https://github.com/RiquelmeMagal/Problema_Caixeiro_Viajante/blob/dev/LICENSE)
+
 ## Desenvolvedores
-## Hardware e software sugeridos
+| Nome | E-mail |
+| --- | --- |
+| Gustavo Henrique | [gustavo.malaquias@arapiraca.ufal.br](mailto:gustavo.malaquias@arapiraca.ufal.br) |
+| Riquelme Magalhães | [riquelme.souza@arapiraca.ufal.br](mailto:riquelme.souza@arapiraca.ufal.br) |
+| Alex Sandro | [alex.oliveira@arapiraca.ufal.br](mailto:alex.oliveira@arapiraca.ufal.br) |
+| Jaiane Oliveira | [jaiane.oliveira@arapiraca.ufal.br](mailto:jaiane.oliveira@arapiraca.ufal.br) |
+
