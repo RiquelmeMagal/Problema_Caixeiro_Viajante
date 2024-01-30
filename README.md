@@ -3,8 +3,6 @@
 ### O que é o problema?
 O Problema do Caixeiro Viajante é um problema cujo objetivo é determinar a menor rota para percorrer uma série de cidades, visitando uma única vez cada uma delas, e retornar à cidade de origem. Este projeto tem como objetivo aplicar a teoria dos grafos para resolver o Problema do Caixeiro Viajante, sendo cada cidade representada por um nó e as conexões entre as cidades sendo as arestas.
 
-### O que é este projeto?
-
 ### Modelando a solução
 Para resolver precisamos de uma base de dados com todos os pontos de origem, todos os pontos de destino e os custos para percorrer cada aresta. Como esse grafo é um circuíto, toda origem também é um destino, logo, só precisamos de uma variável `n` com a quantidade de vértices, representando o número de cidades, e a matriz com os custos para percorrer as arestas.
 
