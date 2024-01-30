@@ -1,7 +1,7 @@
 # Problema do caixeiro viajante
 ## Descrição
 ### O que é o problema?
-O Problema do Caixeiro Viajante(*Traveling Salesman Problem* - TSP) consiste em encontrar a rota mais curta que um viajante deve percorrer para visitar um conjunto de cidades uma vez e retornar ao ponto de origem. O objetivo é minimizar a distância total percorrida, levando em consideração as distâncias entre todas as cidades. O problema é conhecido por ser NP-Completo, o que significa que não há algoritmo eficiente conhecido para resolvê-lo em tempo polinomial para um grande número de cidades. 
+O Problema do Caixeiro Viajante é um problema cujo objetivo é determinar a menor rota para percorrer uma série de cidades, visitando uma única vez cada uma delas, e retornar à cidade de origem. Este projeto tem como objetivo aplicar a teoria dos grafos para resolver o Problema do Caixeiro Viajante, sendo cada cidade representada por um nó e as conexões entre as cidades sendo as arestas.
 
 ### O que é este projeto?
 
