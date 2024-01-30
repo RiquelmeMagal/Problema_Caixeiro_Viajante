@@ -16,7 +16,7 @@ Existem várias outras, entretanto, como vamos usar base de dados pequenas, para
 Existem várias bases de dados com soluções já conhecidas para o TSP. Você pode baixar todas [aqui](http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/tsp/). Para esse projeto, selecionamos as seguintes:
 | Base de dados | Número de cidades | Solução padrão |
 |---|---|---|
-| att48 | 48 | 10628 | 
+| att48 | 48 | 33523 | 
 | dantzig42 | 42 | 699 |
 | fri26 | 26 | 937 |
 | gr17 | 17 | 2085 |
