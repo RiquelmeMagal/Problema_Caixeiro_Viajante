@@ -146,7 +146,7 @@ pip install -r requirements.txt
 Depois disso, é só executar o programa e interagir com o menu.
 
 ## Licença
-- [GNU 3.0](https://github.com/RiquelmeMagal/Problema_Caixeiro_Viajante/blob/dev/LICENSE)
+- [GNU 3.0](https://github.com/RiquelmeMagal/Problema_Caixeiro_Viajante/blob/main/LICENSE)
 
 ## Desenvolvedores
 | Nome | E-mail |
