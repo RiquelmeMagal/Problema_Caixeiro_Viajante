@@ -38,6 +38,104 @@ requeriments.txt # dependências do projeto
 README.md
 LICENSE 
 ```
+
+1. O programa começa no arquivo `main.py` que inicia oferecendo ao usuário um menu para seleção da base de dados:
+   ```
+   def menu():
+    print("Escolha uma opção:")
+    print("1 - gr17_d (17 cidades)")
+    print("2 - att48_d (48 cidades)")
+    print("3 - p01_d (15 cidades)")
+    print("4 - dantzig42_d (42 cidades)")
+    print("5 - fri26_d (26 cidades)")
+   ```
+2. A partir do que ele selecionar, ele chama as funções para ler a base de dados, gerar uma matriz de custos e salvar em um novo arquivo:
+   ```
+   menu()
+    valor = int(input("Digite uma das opções desejadas: "))
+    match valor:
+      case 1:
+          valor, PONTOS = "datasets_/gr17_d.txt", 17
+      case 2:
+          valor, PONTOS = "datasets_/att48_d.txt", 48
+      case 3:
+          valor, PONTOS = "datasets_/p01_d.txt", 15
+      case 4:
+          valor, PONTOS = "datasets_/dantzig42_d.txt", 42
+      case 5:
+          valor, PONTOS = "datasets_/fri26_d.txt", 26
+      case _:
+          print("Opção inválida. Escolha entre 1, 2, 3, 4 ou 5.")
+
+      matrizes_list = criar_matriz(valor)
+      salvar_matriz(matrizes_list, "nova_matriz.txt")
+      nome_arquivo = 'nova_matriz.txt'
+      qtd_pontos = PONTOS
+      mat_custos = ler_matriz_do_arquivo(nome_arquivo)
+   ```
+3. Em seguida ele chama a função para resolver o problema:
+   ```
+    resolver_problema(mat_custos, qtd_pontos)
+   ```
+Para resolver o problema, usamos a biblioteca `gurobi`. No arquivo `solver.py`, a partir dos parâmetros passados para a função temos:
+1. Gera uma lista com todos os pontos de origem e destino:
+   ```
+   origens = [i + 1 for i in range(qtd_pontos)]
+   destinos = [i + 1 for i in range(qtd_pontos)]
+   ```
+2. Transforma a matriz de custos em um dicionário
+   ```
+   custos = dict()
+    for i, origem in enumerate(origens):
+        for j, destino in enumerate(destinos):
+            custos[origem, destino] = mat_custos[i][j
+   ```
+3. Inicializa o modelo, cria as variáveis de decisão e define a função objetivo
+   ```
+    # Inicializa o modelo
+    m = gp.Model()
+
+    # Variáveis de decisão
+    x = m.addVars(origens, destinos, vtype=gp.GRB.BINARY)
+    u = m.addVars(origens[1:], vtype=gp.GRB.INTEGER, ub=qtd_pontos - 1)
+
+    # Função Objetivo
+    m.setObjective(x.prod(custos), sense=gp.GRB.MINIMIZE)
+   ```
+4. Adiciona as restrições ao modelo
+   ```
+    # Restrições que garantem que cada ponto será origem exatamente uma vez
+    c1 = m.addConstrs(
+        gp.quicksum(x[i, j] for j in destinos if i != j) == 1
+        for i in origens)
+
+    # Restrições que garantem que cada ponto será destino exatamente uma vez
+    c2 = m.addConstrs(
+        gp.quicksum(x[i, j] for i in origens if i != j) == 1
+        for j in destinos)
+
+    # Restrições de eliminação de subrotas
+    c3 = m.addConstrs(
+        u[i] - u[j] + qtd_pontos * x[i, j] <= qtd_pontos - 1
+        for i in origens[1:] for j in destinos[1:] if i != j)
+    ```
+5. Executa o algorítmo, gera um vetor com o circuito e imprime isso no console:
+   ```
+    m.optimize()
+
+    circuito = [1]
+    anterior = 1
+    for ponto in range(qtd_pontos):
+        for j in destinos:
+            if round(x[anterior, j].X) == 1:
+                circuito.append(j)
+                anterior = j
+                break
+
+    print("Circuito percorrido: ")
+    print(circuito)
+   ```
+   
 ## Instalação
 ## Como usar
 ## Licença
