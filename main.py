@@ -2,7 +2,8 @@
 
 import ast
 from datasets import criar_matriz, salvar_matriz, ler_matriz_do_arquivo
-from solver import resolver_problema
+#from solver import resolver_problema
+from prim import prim
 
 def menu():
     print("Escolha uma opção:")
@@ -42,4 +43,5 @@ qtd_pontos = PONTOS
 mat_custos = ler_matriz_do_arquivo(nome_arquivo)
 
 # Chama a função para resolver o problema
-resolver_problema(mat_custos, qtd_pontos)
+#resolver_problema(mat_custos, qtd_pontos)
+prim(mat_custos)
