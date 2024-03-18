@@ -5,6 +5,7 @@ from datasets import criar_matriz, salvar_matriz, ler_matriz_do_arquivo
 from prim import prim
 from dijkstra import dijkstra
 from forca_bruta import forca_bruta
+from christofides import christofides_full
 
 def menu():
     print("Escolha uma opção:")
@@ -26,8 +27,14 @@ def resolver_problema(mat_custos, qtd_pontos, escolha_algoritmo):
         melhor_custo, melhor_rota = forca_bruta(mat_custos)
         print("Melhor rota:", melhor_rota)
         print("Menor custo:", melhor_custo)
+    elif escolha_algoritmo == 4:
+        print("Utilizando algoritmo de Christofides:")
+        length, path = christofides_full(mat_custos)
+        print("Tour:", path)
+        print("Tamanho do tour:", int(length))
+
     else:
-        print("Opção inválida. Escolha entre 1, 2 ou 3.")
+        print("Opção inválida. Escolha entre 1, 2, 3 ou 4.")
 
 # Exemplo de uso sem função
 menu()
@@ -59,7 +66,7 @@ qtd_pontos = PONTOS
 mat_custos = ler_matriz_do_arquivo(nome_arquivo)
 
 # Escolha do algoritmo
-escolha_algoritmo = int(input("Escolha o algoritmo (1 - Prim, 2 - Dijkstra, 3 - Força Bruta): "))
+escolha_algoritmo = int(input("Escolha o algoritmo (1 - Prim, 2 - Dijkstra, 3 - Força Bruta, 4 - Christofides): "))
 
 # Chama a função para resolver o problema
 resolver_problema(mat_custos, qtd_pontos, escolha_algoritmo)

@@ -1,5 +1,7 @@
 
-from Christofides import tsp
+from Christofides.full import christofides as christofides_full
+from Christofides.minimal import christofides as christofides_min
+
 from datasets import criar_matriz, salvar_matriz
 
 def ler_matriz_do_arquivo(nome_arquivo):
@@ -15,8 +17,6 @@ def ler_matriz_do_arquivo(nome_arquivo):
     except Exception as e:
         print(f"Erro ao ler matriz do arquivo: {e}")
         return None
-
-
 
 
 datasets = {
@@ -46,11 +46,6 @@ datasets = {
         "minimal_cost": 33523
     }
 }
-def run(matriz_custos):
-    length, path = tsp(matriz_custos)
-
-    return length, path
-    
 
 def calculate_efficiency(media_custo, minimal_cost):
     eficiencia = ((media_custo - minimal_cost) / minimal_cost) * 100
@@ -59,8 +54,8 @@ def calculate_efficiency(media_custo, minimal_cost):
     else:
         return "{:.2f}%".format(abs(eficiencia))
 
-def print_table():
-    print("EXECUCAO DO ALGORITMO DE CHISTOFIDES PARA O TSP")
+def analytics():
+    print("EXECUCAO DO ALGORITMO COMPLETO DE CHISTOFIDES PARA O TSP")
     print("+-----------------+-------------------+-------------------------+-------------------------------------+-------------------+")
     print("| Dataset         | Número de cidades | Tamanho mínimo do tour  | Tamanho médio do tour (3 execuções) | Eficiência (%)    |")
     print("+-----------------+-------------------+-------------------------+-------------------------------------+-------------------+")
@@ -75,7 +70,7 @@ def print_table():
 
         for i in range(3):
             matriz_custos = ler_matriz_do_arquivo(nome_arquivo)
-            coast, path = tsp(matriz_custos)
+            coast, path = christofides_full(matriz_custos)
             resultados.append(int(coast))
             caminhos.append(path)
 
@@ -86,5 +81,32 @@ def print_table():
 
     print("+-----------------+-------------------+-------------------------+-------------------------------------+-------------------+")
 
+    print("EXECUCAO DO ALGORITMO SIMPLIFICADO DE CHISTOFIDES PARA O TSP")
+    print("+-----------------+-------------------+-------------------------+-------------------------------------+-------------------+")
+    print("| Dataset         | Número de cidades | Tamanho mínimo do tour  | Tamanho médio do tour (3 execuções) | Eficiência (%)    |")
+    print("+-----------------+-------------------+-------------------------+-------------------------------------+-------------------+")
+
+    for dataset, info in datasets.items():
+        resultados = []
+        caminhos = []
+
+        nome_arquivo = info["path"]
+        matrizes_list = criar_matriz(nome_arquivo)
+        salvar_matriz(matrizes_list, "nova_matriz.txt")
+
+        for i in range(3):
+            matriz_custos = ler_matriz_do_arquivo(nome_arquivo)
+            coast, path = christofides_min(matriz_custos)
+            resultados.append(int(coast))
+            caminhos.append(path)
+
+        media_custo = sum(resultados) / 3
+        eficiencia = calculate_efficiency(media_custo, info["minimal_cost"])
+
+        print("| {:<15} | {:<17} | {:<23} | {:<35} | {:<17} |".format(dataset, info["cities"], info["minimal_cost"], int(media_custo), eficiencia))
+
+    print("+-----------------+-------------------+-------------------------+-------------------------------------+-------------------+")
+
+    
 if __name__ == "__main__":
-    print_table()
+    analytics()
