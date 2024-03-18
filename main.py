@@ -2,9 +2,9 @@
 
 import ast
 from datasets import criar_matriz, salvar_matriz, ler_matriz_do_arquivo
-#from solver import resolver_problema
-#from prim import prim
+from prim import prim
 from dijkstra import dijkstra
+from forca_bruta import forca_bruta
 
 def menu():
     print("Escolha uma opção:")
@@ -13,6 +13,21 @@ def menu():
     print("3 - p01_d (15 cidades)")
     print("4 - dantzig42_d (42 cidades)")
     print("5 - fri26_d (26 cidades)")
+
+def resolver_problema(mat_custos, qtd_pontos, escolha_algoritmo):
+    if escolha_algoritmo == 1:
+        print("Utilizando algoritmo de Prim:")
+        prim(mat_custos)
+    elif escolha_algoritmo == 2:
+        print("Utilizando algoritmo de Dijkstra:")
+        dijkstra(mat_custos)
+    elif escolha_algoritmo == 3:
+        print("Utilizando algoritmo de força bruta:")
+        melhor_custo, melhor_rota = forca_bruta(mat_custos)
+        print("Melhor rota:", melhor_rota)
+        print("Menor custo:", melhor_custo)
+    else:
+        print("Opção inválida. Escolha entre 1, 2 ou 3.")
 
 # Exemplo de uso sem função
 menu()
@@ -43,7 +58,8 @@ qtd_pontos = PONTOS
 # Matriz de custos
 mat_custos = ler_matriz_do_arquivo(nome_arquivo)
 
+# Escolha do algoritmo
+escolha_algoritmo = int(input("Escolha o algoritmo (1 - Prim, 2 - Dijkstra, 3 - Força Bruta): "))
+
 # Chama a função para resolver o problema
-#resolver_problema(mat_custos, qtd_pontos)
-#prim(mat_custos)
-dijkstra(mat_custos)
+resolver_problema(mat_custos, qtd_pontos, escolha_algoritmo)
