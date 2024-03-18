@@ -3,7 +3,8 @@
 import ast
 from datasets import criar_matriz, salvar_matriz, ler_matriz_do_arquivo
 #from solver import resolver_problema
-from prim import prim
+#from prim import prim
+from dijkstra import dijkstra
 
 def menu():
     print("Escolha uma opção:")
@@ -44,4 +45,5 @@ mat_custos = ler_matriz_do_arquivo(nome_arquivo)
 
 # Chama a função para resolver o problema
 #resolver_problema(mat_custos, qtd_pontos)
-prim(mat_custos)
+#prim(mat_custos)
+dijkstra(mat_custos)
